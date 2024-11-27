@@ -6,7 +6,6 @@
 --]]
 
 local gears = require("gears")
-local lain  = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
@@ -88,9 +87,6 @@ theme.titlebar_maximized_button_normal_active   = theme.dir .. "/icons/titlebar/
 theme.titlebar_maximized_button_focus_inactive  = theme.dir .. "/icons/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/maximized_normal_inactive.png"
 
-local markup = lain.util.markup
-local separators = lain.util.separators
-
 local keyboardlayout = awful.widget.keyboardlayout:new()
 
 theme.set_wallpaper = function(s)
@@ -143,9 +139,6 @@ local tasklist_buttons = gears.table.join(
   awful.button({ }, 5, function ()
     awful.client.focus.byidx(-1)
   end))
-
--- Keyboard map indicator and switcher
-local mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- Create a textclock widget
 local mytextclock = wibox.widget.textclock()
