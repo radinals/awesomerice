@@ -196,6 +196,13 @@ globalkeys = gears.table.join(
     {description = "show dmenu", group = "launcher"}
   ),
 
+  awful.key({ MODKEY, ALTKEY }, "Escape",
+    function ()
+      os.execute("dm-power")
+    end,
+    {description = "show dmenu", group = "launcher"}
+  ),
+
   awful.key(
     { MODKEY, ALTKEY }, "m",
     function () awful.spawn.with_shell("xmouseless") end,
@@ -258,7 +265,6 @@ globalkeys = gears.table.join(
   awful.key(
     { }, "XF86AudioRaiseVolume", function ()
       os.execute("pactl set-sink-volume @DEFAULT_SINK@ +1%")
-      beautiful.volume.update()
     end,
     {description = "+1%", group = "mediakeys"}
   ),
@@ -266,7 +272,6 @@ globalkeys = gears.table.join(
   awful.key(
     { }, "XF86AudioLowerVolume", function ()
       os.execute("pactl set-sink-volume @DEFAULT_SINK@ -1%")
-      beautiful.volume.update()
     end,
     {description = "-1%", group = "mediakeys"}
   ),
@@ -274,7 +279,6 @@ globalkeys = gears.table.join(
   awful.key(
     { }, "XF86AudioMute", function ()
       os.execute("pactl set-sink-mute @DEFAULT_SINK@ toggle")
-      beautiful.volume.update()
     end,
     {description = "mute", group = "mediakeys"}
   ),
@@ -283,8 +287,7 @@ globalkeys = gears.table.join(
   awful.key(
     { MODKEY, SHIFTKEY }, "=",
     function ()
-      os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
-      beautiful.volume.update()
+      os.execute("pactl set-sink-volume @DEFAULT_SINK@ +1%")
     end,
     {description = "volume up", group = "mediakeys"}
   ),
@@ -292,8 +295,7 @@ globalkeys = gears.table.join(
   awful.key(
     { MODKEY, SHIFTKEY }, "-",
     function ()
-      os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
-      beautiful.volume.update()
+      os.execute("pactl set-sink-volume @DEFAULT_SINK@ -1%")
     end,
     {description = "volume down", group = "mediakeys"}
   ),
@@ -301,10 +303,7 @@ globalkeys = gears.table.join(
   awful.key(
     { MODKEY, SHIFTKEY }, "BackSpace",
     function ()
-      os.execute(string.format("amixer -q set %s toggle",
-        beautiful.volume.togglechannel or beautiful.volume.channel)
-      )
-      beautiful.volume.update()
+      os.execute("pactl set-sink-mute @DEFAULT_SINK@ toggle")
     end,
     {description = "toggle mute", group = "mediakeys"}
   )
