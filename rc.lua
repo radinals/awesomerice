@@ -156,14 +156,18 @@ globalkeys = gears.table.join(
   ),
 
   -- Layout manipulation
-  awful.key({ MODKEY, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
+  awful.key({ MODKEY, SHIFTKEY   }, "j", function () awful.client.swap.byidx(  1)    end,
     {description = "swap with next client by index", group = "client"}),
-  awful.key({ MODKEY, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
+
+  awful.key({ MODKEY, SHIFTKEY   }, "k", function () awful.client.swap.byidx( -1)    end,
     {description = "swap with previous client by index", group = "client"}),
-  awful.key({ MODKEY, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
+
+  awful.key({ MODKEY, CONTROLKEY }, "j", function () awful.screen.focus_relative( 1) end,
     {description = "focus the next screen", group = "screen"}),
-  awful.key({ MODKEY, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
+
+  awful.key({ MODKEY, CONTROLKEY }, "k", function () awful.screen.focus_relative(-1) end,
     {description = "focus the previous screen", group = "screen"}),
+
   awful.key({ MODKEY,           }, "u", awful.client.urgent.jumpto,
     {description = "jump to urgent client", group = "client"}),
 
@@ -182,39 +186,32 @@ globalkeys = gears.table.join(
   awful.key({ MODKEY }, "Return", function () awful.spawn(terminal) end,
     {description = "open a terminal", group = "launcher"}),
 
-  awful.key({ MODKEY, "Shift" }, "Return", function () awful.spawn("st -e tmux_start") end,
+  awful.key({ MODKEY, SHIFTKEY }, "Return", function () awful.spawn("st -e tmux_start") end,
     {description = "open a terminal", group = "launcher"}),
 
-  awful.key({ MODKEY }, "space",
-    function () os.execute("dmenu_run -c -i -g 3 -bw 1 -l 20 -p 'RUN:'") end,
+
+  awful.key({ MODKEY }, "space", function () awful.spawn("dmenu_run -c -i -g 3 -bw 1 -l 20 -p 'RUN:'") end,
     {description = "show dmenu", group = "launcher"}),
 
-  awful.key({ MODKEY, SHIFTKEY }, "space",
-    function ()
-      os.execute("WinSwitcher")
-    end,
-    {description = "show dmenu", group = "launcher"}
-  ),
+  awful.key({ MODKEY, SHIFTKEY }, "space", function () awful.spawn("WinSwitcher") end,
+    {description = "show dmenu", group = "launcher"}),
 
-  awful.key({ MODKEY, ALTKEY }, "Escape",
-    function ()
-      os.execute("dm-power")
-    end,
-    {description = "show dmenu", group = "launcher"}
-  ),
+  awful.key({ MODKEY, ALTKEY }, "Escape", function () awful.spawn("dm-power") end,
+    {description = "show dmenu", group = "launcher"}),
 
-  awful.key(
-    { MODKEY, ALTKEY }, "m",
-    function () awful.spawn.with_shell("xmouseless") end,
+
+  awful.key( { MODKEY, ALTKEY }, "m", function () awful.spawn.with_shell("xmouseless") end,
     {description = "run xmouseless", group = "launcher"}),
 
   awful.key({ MODKEY, ALTKEY }, "r", awesome.restart,
     {description = "reload awesome", group = "awesome"}),
+
   awful.key({ MODKEY, CONTROLKEY  }, "q", awesome.quit,
     {description = "quit awesome", group = "awesome"}),
 
   awful.key({ MODKEY,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
     {description = "increase master width factor", group = "layout"}),
+
   awful.key({ MODKEY,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
     {description = "decrease master width factor", group = "layout"}),
 
@@ -317,11 +314,11 @@ clientkeys = gears.table.join(
       c:raise()
     end,
     {description = "toggle fullscreen", group = "client"}),
-  awful.key({ MODKEY, "Shift"   }, "c",      function (c) c:kill()                         end,
+  awful.key({ MODKEY, SHIFTKEY   }, "c",      function (c) c:kill()                         end,
     {description = "close", group = "client"}),
-  awful.key({ MODKEY, "Control" }, "space",  awful.client.floating.toggle                     ,
+  awful.key({ MODKEY, CONTROLKEY }, "space",  awful.client.floating.toggle                     ,
     {description = "toggle floating", group = "client"}),
-  awful.key({ MODKEY, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
+  awful.key({ MODKEY, CONTROLKEY }, "Return", function (c) c:swap(awful.client.getmaster()) end,
     {description = "move to master", group = "client"}),
   awful.key({ MODKEY,           }, "o",      function (c) c:move_to_screen()               end,
     {description = "move to screen", group = "client"}),
@@ -340,13 +337,13 @@ clientkeys = gears.table.join(
       c:raise()
     end ,
     {description = "(un)maximize", group = "client"}),
-  awful.key({ MODKEY, "Control" }, "m",
+  awful.key({ MODKEY, CONTROLKEY }, "m",
     function (c)
       c.maximized_vertical = not c.maximized_vertical
       c:raise()
     end ,
     {description = "(un)maximize vertically", group = "client"}),
-  awful.key({ MODKEY, "Shift"   }, "m",
+  awful.key({ MODKEY, SHIFTKEY   }, "m",
     function (c)
       c.maximized_horizontal = not c.maximized_horizontal
       c:raise()
@@ -370,7 +367,7 @@ for i = 1, 9 do
       end,
       {description = "view tag #"..i, group = "tag"}),
     -- Toggle tag display.
-    awful.key({ MODKEY, "Control" }, "#" .. i + 9,
+    awful.key({ MODKEY, CONTROLKEY }, "#" .. i + 9,
       function ()
         local screen = awful.screen.focused()
         local tag = screen.tags[i]
@@ -380,7 +377,7 @@ for i = 1, 9 do
       end,
       {description = "toggle tag #" .. i, group = "tag"}),
     -- Move client to tag.
-    awful.key({ MODKEY, "Shift" }, "#" .. i + 9,
+    awful.key({ MODKEY, SHIFTKEY }, "#" .. i + 9,
       function ()
         if client.focus then
           local tag = client.focus.screen.tags[i]
@@ -391,7 +388,7 @@ for i = 1, 9 do
       end,
       {description = "move focused client to tag #"..i, group = "tag"}),
     -- Toggle tag on focused client.
-    awful.key({ MODKEY, "Control", "Shift" }, "#" .. i + 9,
+    awful.key({ MODKEY, CONTROLKEY, SHIFTKEY }, "#" .. i + 9,
       function ()
         if client.focus then
           local tag = client.focus.screen.tags[i]
