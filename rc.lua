@@ -458,6 +458,7 @@ awful.rules.rules = {
     class = {
       "Qalculate-gtk",
       "Arandr",
+      "Zeal",
       "Blueman-manager",
       "Gpick",
       "Kruler",

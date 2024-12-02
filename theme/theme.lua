@@ -190,12 +190,13 @@ theme.at_screen_connect = function(s)
     s.mytasklist, -- Middle widget
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
+      wibox.widget.systray(),
       separator,
       cmus_widget(),
       separator,
-      battery_widget(),
-      separator,
-      wibox.widget.systray(),
+      battery_widget{
+        show_current_level=true
+      },
       separator,
       mytextclock,
     },
