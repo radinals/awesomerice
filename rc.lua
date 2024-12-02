@@ -419,6 +419,15 @@ clientbuttons = gears.table.join(
   end)
 )
 
+local center_client = function(c)
+  local geometry = screen[c.screen].workarea
+  local width = c.width or 800
+  local height = c.height or 600
+  local x = geometry.x + (geometry.width - width) / 2
+  local y = geometry.y + (geometry.height - height) / 2
+  c:geometry({ x = x, y = y })
+end
+
 -- Set keys
 root.keys(globalkeys)
 -- }}}
@@ -469,7 +478,12 @@ awful.rules.rules = {
       "ConfigManager",  -- Thunderbird's about:config.
       "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
     }
-  }, properties = { floating = true }},
+  },
+    properties = {
+      floating = true,
+      callback = center_client
+    },
+  },
 
   -- Add titlebars to normal clients and dialogs
   { rule_any = {type = { "normal", "dialog" }
