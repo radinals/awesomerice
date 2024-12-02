@@ -189,7 +189,7 @@ globalkeys = gears.table.join(
   awful.key({ MODKEY, SHIFTKEY }, "Return", function () awful.spawn("st -e tmux_start") end,
     {description = "open a terminal", group = "launcher"}),
 
-  awful.key({ MODKEY, CONTROLKEY }, "Return", function () awful.spawn("eclipse") end,
+  awful.key({ MODKEY, ALTKEY }, "Return", function () awful.spawn("eclipse") end,
     {description = "open a terminal", group = "launcher"}),
 
   awful.key({ MODKEY }, "space", function () awful.spawn("dmenu_run -c -i -g 3 -bw 1 -l 20 -p 'RUN:'") end,
