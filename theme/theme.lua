@@ -134,7 +134,10 @@ local tasklist_buttons = gears.table.join(
   end))
 
 -- Create a textclock widget
+local separator = wibox.widget.textbox("   ")
 local mytextclock = wibox.widget.textclock()
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+local cmus_widget = require("awesome-wm-widgets.cmus-widget.cmus")
 
 awful.util.tagnames = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" }
 
@@ -187,7 +190,13 @@ theme.at_screen_connect = function(s)
     s.mytasklist, -- Middle widget
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
+      separator,
+      cmus_widget(),
+      separator,
+      battery_widget(),
+      separator,
       wibox.widget.systray(),
+      separator,
       mytextclock,
     },
   }
