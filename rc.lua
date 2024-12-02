@@ -201,6 +201,8 @@ globalkeys = gears.table.join(
   awful.key({ MODKEY, ALTKEY }, "Escape", function () awful.spawn("dm-power") end,
     {description = "show dmenu", group = "launcher"}),
 
+  awful.key( { MODKEY, SHIFTKEY }, "F12", function () awful.spawn("qalculate-gtk") end,
+    {description = "run xmouseless", group = "launcher"}),
 
   awful.key( { MODKEY, ALTKEY }, "m", function () awful.spawn.with_shell("xmouseless") end,
     {description = "run xmouseless", group = "launcher"}),
@@ -445,6 +447,7 @@ awful.rules.rules = {
       "pinentry",
     },
     class = {
+      "Qalculate-gtk",
       "Arandr",
       "Blueman-manager",
       "Gpick",
