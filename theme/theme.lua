@@ -1,10 +1,3 @@
---[[
-
-     Powerarrow Dark Awesome WM theme
-     github.com/lcpz
-
---]]
-
 local gears = require("gears")
 local awful = require("awful")
 local wibox = require("wibox")
