@@ -2,9 +2,10 @@ local gears = require("gears")
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
-
-local os = os
-local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
+local hotkeys_popup = require("awful.hotkeys_popup")
+local keys   = require("module.keys")
+local menubar = require("menubar")
+local defaults = require("module.default_programs")
 
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/theme"
@@ -80,8 +81,6 @@ theme.titlebar_maximized_button_normal_active   = theme.dir .. "/icons/titlebar/
 theme.titlebar_maximized_button_focus_inactive  = theme.dir .. "/icons/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/maximized_normal_inactive.png"
 
-local keyboardlayout = awful.widget.keyboardlayout:new()
-
 theme.set_wallpaper = function(s)
   -- Wallpaper
   if theme.wallpaper then
@@ -94,50 +93,21 @@ theme.set_wallpaper = function(s)
   end
 end
 
-local taglist_buttons = gears.table.join(
-  awful.button({ }, 1, function(t) t:view_only() end),
-  awful.button({ MODKEY }, 1, function(t)
-    if client.focus then
-      client.focus:move_to_tag(t)
-    end
-  end),
-  awful.button({ }, 3, awful.tag.viewtoggle),
-  awful.button({ MODKEY }, 3, function(t)
-    if client.focus then
-      client.focus:toggle_tag(t)
-    end
-  end),
-  awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-  awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
-)
-
-local tasklist_buttons = gears.table.join(
-  awful.button({ }, 1, function (c)
-    if c == client.focus then
-      c.minimized = true
-    else
-      c:emit_signal(
-        "request::activate",
-        "tasklist",
-        {raise = true}
-      )
-    end
-  end),
-  awful.button({ }, 3, function()
-    awful.menu.client_list({ theme = { width = 250 } })
-  end),
-  awful.button({ }, 4, function ()
-    awful.client.focus.byidx(1)
-  end),
-  awful.button({ }, 5, function ()
-    awful.client.focus.byidx(-1)
-  end))
-
 -- Create a textclock widget
 local separator = wibox.widget.textbox("   ")
 local mytextclock = wibox.widget.textclock()
-local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
-local cmus_widget = require("awesome-wm-widgets.cmus-widget.cmus")
+
+local getWidget = function (widget, ...)
+  local success, mywidget = pcall(require, widget)
+  if (success) then
+    return mywidget{...}
+  else
+    return wibox.widget.textbox("[ERROR]")
+  end
+end
+
+local battery_widget = getWidget("theme.awesome-wm-widgets.battery-widget.battery",{ show_current_level=true })
+local cmus_widget = getWidget("theme.awesome-wm-widgets.cmus-widget.cmus")
 
 awful.util.tagnames = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" }
 
@@ -165,14 +135,14 @@ theme.at_screen_connect = function(s)
   s.mytaglist = awful.widget.taglist {
     screen  = s,
     filter  = awful.widget.taglist.filter.all,
-    buttons = taglist_buttons
+    buttons = keys.taglist_buttons
   }
 
   -- Create a tasklist widget
   s.mytasklist = awful.widget.tasklist {
     screen  = s,
     filter  = awful.widget.tasklist.filter.currenttags,
-    buttons = tasklist_buttons
+    buttons = keys.tasklist_buttons
   }
 
   -- Create the wibox
@@ -192,11 +162,9 @@ theme.at_screen_connect = function(s)
       layout = wibox.layout.fixed.horizontal,
       wibox.widget.systray(),
       separator,
-      cmus_widget(),
+      cmus_widget,
       separator,
-      battery_widget{
-        show_current_level=true
-      },
+      battery_widget,
       separator,
       mytextclock,
     },
@@ -204,5 +172,20 @@ theme.at_screen_connect = function(s)
 
 end
 
-return theme
+theme.awesomemenu = {
+  { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
+  { "manual", defaults.terminal .. " -e man awesome" },
+  { "edit config", defaults.editor_cmd .. " " .. awesome.conffile },
+  { "restart", awesome.restart },
+  { "quit", function() awesome.quit() end },
+}
 
+theme.mainmenu = awful.menu({ items = {
+    { "awesome", theme.awesomemenu, theme.awesome_icon },
+    { "open terminal", defaults.terminal }
+  }
+})
+
+menubar.utils.terminal = defaults.terminal -- Set the terminal for applications that require it
+
+return theme
