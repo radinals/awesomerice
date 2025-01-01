@@ -1,6 +1,6 @@
 local awful = require("awful")
 local gears = require("gears")
-local M = require("module.modkeys")
+local M = require("module.keybindings.modkeys")
 
 local keybindings = {}
 
@@ -11,36 +11,27 @@ local function generateKeyTable(module)
     local group = keys.group
     for _, binding in ipairs(keys.bindings) do -- Correctly use `keys.bindings`
       if binding.button then
-        if binding.press and bindings.release then
-          t = gears.table.join( t,
-            awful.button(binding.mod, binding.button, bindings.press, binding.release)
-          )
-        elseif bindings.release then
-          t = gears.table.join( t,
-            awful.button(binding.mod, binding.button, nil, binding.release)
-          )
-        else
           t = gears.table.join( t,
             awful.button(binding.mod, binding.button, binding.press, nil)
           )
-        end
       else
-        t = gears.table.join( t,
-          awful.key(binding.mod, binding.key, binding.action, {description = binding.desc, group = group}
-          )
-        )
+        if binding.description then
+          t = gears.table.join( t, awful.key(binding.mod, binding.key, binding.press, {description = binding.desc, group = group}))
+        else
+          t = gears.table.join( t, awful.key(binding.mod, binding.key, binding.press, {group = group}) )
+        end
       end
     end
   end
   return t
 end
 
-keybindings.globalkeys = generateKeyTable("module.bindings")
-keybindings.clientkeys = generateKeyTable("module.clientkeys")
-keybindings.taglist_buttons = generateKeyTable("module.taglistbuttons")
-keybindings.mousebindings = generateKeyTable("module.mousebuttons")
-keybindings.tasklist_buttons = generateKeyTable("module.tasklistbuttons")
-keybindings.clientbuttons = generateKeyTable("module.clientbuttons")
+keybindings.globalkeys = generateKeyTable("module.keybindings.globalkeys")
+keybindings.clientkeys = generateKeyTable("module.keybindings.clientkeys")
+keybindings.taglist_buttons = generateKeyTable("module.keybindings.taglistbuttons")
+keybindings.mousebindings = generateKeyTable("module.keybindings.mousebuttons")
+keybindings.tasklist_buttons = generateKeyTable("module.keybindings.tasklistbuttons")
+keybindings.clientbuttons = generateKeyTable("module.keybindings.clientbuttons")
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.

@@ -1,10 +1,9 @@
 
 local awful = require("awful")
-local M = require("module.modkeys")
+local M = require("module.keybindings.modkeys")
 
 return {
   {
-    group = "Tasklist",
     bindings = {
       {mod = {}, button = 1, press = function(c)
         c:emit_signal("request::activate", "mouse_click", {raise = true})

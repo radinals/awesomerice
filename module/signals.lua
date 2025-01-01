@@ -3,7 +3,6 @@ local wibox = require("wibox")
 local gears = require("gears")
 local awful = require("awful")
 
-
 local manageClient = function (c)
   -- Set the windows at the slave,
   -- i.e. put it at the end of others instead of setting it master.

@@ -1,14 +1,14 @@
-local program = {}
+local p = {}
 
-program.terminal = "st"
-program.editor = os.getenv("EDITOR") or "vi"
-program.editor_cmd = program.terminal .. " -e " .. program.editor
-program.powermenu = "dm-power"
-program.calculator = "qalculate-gtk"
-program.xmouseless = "xmouseless"
-program.windowswitcher = "WinSwitcher"
-program.runprompt = "dmenu_run -c -i -g 3 -bw 1 -l 20 -p 'RUN:'"
-program.eclipse = "eclipse"
-program.tmux = program.terminal .. " -e " .. "tmux_start"
+p.terminal = "st"
+p.editor = os.getenv("EDITOR") or "vi"
+p.editor_cmd = p.terminal .. " -e " .. p.editor
+p.powermenu = "dm-power"
+p.calculator = "qalculate-gtk"
+p.xmouseless = "xmouseless"
+p.windowswitcher = "WinSwitcher"
+p.runprompt = "dmenu_run -c -i -g 3 -np -bw 1 -l 20 -p 'RUN'"
+p.eclipse = "eclipse"
+p.tmux = p.terminal .. " -e " .. "tmux_start"
 
-return program
+return p

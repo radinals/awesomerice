@@ -1,10 +1,8 @@
 
-
 local awful = require("awful")
 
 return {
   {
-    group = "Tasklist",
     bindings = {
       {mod = {}, button = 1, press = function(c)
         if c == client.focus then
