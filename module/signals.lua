@@ -3,6 +3,7 @@ local wibox = require("wibox")
 local gears = require("gears")
 local awful = require("awful")
 
+
 local manageClient = function (c)
   -- Set the windows at the slave,
   -- i.e. put it at the end of others instead of setting it master.
@@ -13,6 +14,7 @@ local manageClient = function (c)
     -- Prevent clients from being unreachable after screen count changes.
     awful.placement.no_offscreen(c)
   end
+
 end
 
 local at_titlebar_request = function(c)

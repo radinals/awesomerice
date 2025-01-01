@@ -34,6 +34,7 @@ return {
     },
     class = {
       "Qalculate-gtk",
+      "Pavucontrol",
       "Arandr",
       "Zeal",
       "Blueman-manager",
@@ -68,6 +69,10 @@ return {
   }, properties = { titlebars_enabled = true }
   },
 
+  { rule_any = { class = {"mpv"}, },
+    properties = { size_hints_honor=false, titlebars_enabled=false }
+  },
+
   { rule_any = { class = {"st-256color"}, name = {"st"} },
     properties = { size_hints_honor=false, titlebars_enabled=false }
   },
@@ -77,3 +82,4 @@ return {
   --   properties = { screen = 1, tag = "2" } },
 
 }
+

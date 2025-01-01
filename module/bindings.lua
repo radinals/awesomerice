@@ -62,6 +62,7 @@ return {
           end
         end,
         desc = "restore minimized" } },
+
   },
 
   {

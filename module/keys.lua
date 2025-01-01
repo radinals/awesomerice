@@ -1,145 +1,46 @@
 local awful = require("awful")
 local gears = require("gears")
-local beautiful = require("beautiful")
 local M = require("module.modkeys")
 
 local keybindings = {}
 
-local bindings = require("module.bindings")
-
-for _, keys in ipairs(bindings) do
-  local group = keys.group
-  for _, binding in ipairs(keys.bindings) do
-    keybindings.globalkeys = gears.table.join(
-      keybindings.globalkeys,
-      awful.key(
-        binding.mod, binding.key, binding.action,
-        {description = binding.desc, group=group}
-      )
-    )
+local function generateKeyTable(module)
+  local bindings = require(module)
+  local t = {}
+  for _, keys in ipairs(bindings) do
+    local group = keys.group
+    for _, binding in ipairs(keys.bindings) do -- Correctly use `keys.bindings`
+      if binding.button then
+        if binding.press and bindings.release then
+          t = gears.table.join( t,
+            awful.button(binding.mod, binding.button, bindings.press, binding.release)
+          )
+        elseif bindings.release then
+          t = gears.table.join( t,
+            awful.button(binding.mod, binding.button, nil, binding.release)
+          )
+        else
+          t = gears.table.join( t,
+            awful.button(binding.mod, binding.button, binding.press, nil)
+          )
+        end
+      else
+        t = gears.table.join( t,
+          awful.key(binding.mod, binding.key, binding.action, {description = binding.desc, group = group}
+          )
+        )
+      end
+    end
   end
+  return t
 end
 
-keybindings.mousebindings = gears.table.join(
-  awful.button({ }, 3, function () beautiful.mainmenu:toggle() end),
-  awful.button({ }, 4, awful.tag.viewnext),
-  awful.button({ }, 5, awful.tag.viewprev)
-)
-
-keybindings.clientkeys = gears.table.join(
-  awful.key({ M.MOD,           }, "f",
-    function (c)
-      c.fullscreen = not c.fullscreen
-      c:raise()
-    end,
-    {description = "toggle fullscreen", group = "client"}),
-
-  awful.key({ M.MOD, M.SHIFT   }, "c",      function (c) c:kill()                         end,
-    {description = "close", group = "client"}),
-
-  awful.key({ M.MOD, M.CONTROL }, "space",  awful.client.floating.toggle                     ,
-    {description = "toggle floating", group = "client"}),
-
-  awful.key({ M.MOD, M.CONTROL }, "Return", function (c) c:swap(awful.client.getmaster()) end,
-    {description = "move to master", group = "client"}),
-
-  awful.key({ M.MOD,           }, "o",      function (c) c:move_to_screen()               end,
-    {description = "move to screen", group = "client"}),
-
-  awful.key({ M.MOD,           }, "t",      function (c) c.ontop = not c.ontop            end,
-    {description = "toggle keep on top", group = "client"}),
-
-  awful.key({ M.MOD,           }, "n",
-    function (c)
-      -- The client currently has the input focus, so it cannot be
-      -- minimized, since minimized clients can't have the focus.
-      c.minimized = true
-    end ,
-    {description = "minimize", group = "client"}),
-
-  awful.key({ M.MOD,           }, "m",
-    function (c)
-      c.maximized = not c.maximized
-      c:raise()
-    end ,
-    {description = "(un)maximize", group = "client"}),
-
-  awful.key({ M.MOD, M.CONTROL }, "m",
-    function (c)
-      c.maximized_vertical = not c.maximized_vertical
-      c:raise()
-    end ,
-    {description = "(un)maximize vertically", group = "client"}),
-
-  awful.key({ M.MOD, M.SHIFT   }, "m",
-    function (c)
-      c.maximized_horizontal = not c.maximized_horizontal
-      c:raise()
-    end ,
-    {description = "(un)maximize horizontally", group = "client"})
-)
-
-
-keybindings.taglist_buttons = gears.table.join(
-  awful.button({ }, 1, function(t) t:view_only() end),
-
-  awful.button({ M.MOD }, 1, function(t)
-    if client.focus then
-      client.focus:move_to_tag(t)
-    end
-  end),
-
-  awful.button({ }, 3, awful.tag.viewtoggle),
-
-  awful.button({ M.MOD }, 3, function(t)
-    if client.focus then
-      client.focus:toggle_tag(t)
-    end
-  end),
-
-  awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-  awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
-)
-
-keybindings.tasklist_buttons = gears.table.join(
-  awful.button({ }, 1, function (c)
-    if c == client.focus then
-      c.minimized = true
-    else
-      c:emit_signal(
-      "request::activate",
-      "tasklist",
-      {raise = true}
-      )
-    end
-  end),
-
-  awful.button({ }, 3, function()
-    awful.menu.client_list({ theme = { width = 250 } })
-  end),
-
-  awful.button({ }, 4, function ()
-    awful.client.focus.byidx(1)
-  end),
-
-  awful.button({ }, 5, function ()
-    awful.client.focus.byidx(-1)
-  end)
-)
-
-keybindings.clientbuttons = gears.table.join(
-  awful.button({ }, 1, function (c)
-    c:emit_signal("request::activate", "mouse_click", {raise = true})
-  end),
-  awful.button({ M.MOD }, 1, function (c)
-    c:emit_signal("request::activate", "mouse_click", {raise = true})
-    awful.mouse.client.move(c)
-  end),
-  awful.button({ M.MOD }, 3, function (c)
-    c:emit_signal("request::activate", "mouse_click", {raise = true})
-    awful.mouse.client.resize(c)
-  end)
-)
+keybindings.globalkeys = generateKeyTable("module.bindings")
+keybindings.clientkeys = generateKeyTable("module.clientkeys")
+keybindings.taglist_buttons = generateKeyTable("module.taglistbuttons")
+keybindings.mousebindings = generateKeyTable("module.mousebuttons")
+keybindings.tasklist_buttons = generateKeyTable("module.tasklistbuttons")
+keybindings.clientbuttons = generateKeyTable("module.clientbuttons")
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
