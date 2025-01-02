@@ -1,6 +1,6 @@
 return {
   MOD = "Mod4",
   SHIFT = "Shift",
-  CONTROL= "control",
+  CONTROL= "Control",
   ALT = "Mod1",
 }
