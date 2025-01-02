@@ -64,15 +64,20 @@ return {
         press = awful.client.urgent.jumpto,
         desc = "jump to urgent client" },
 
-      { mod = { M.MOD, "Control" }, key = "n",
+      { mod = { M.MOD, M.CONTROL }, key = "n",
         press = function()
           local c = awful.client.restore()
           if c then
             c:emit_signal("request::activate", "key.unminimize", {raise = true})
           end
         end,
-        desc = "restore minimized" } },
+        desc = "restore minimized" },
 
+      { mod = { M.MOD, M.SHIFT }, key = "n",
+        press = function() awful.spawn(defaults.windowswitcher) end,
+        desc = "restore minimized" },
+
+    }
   },
 
   {
