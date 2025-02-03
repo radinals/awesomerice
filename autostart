@@ -19,10 +19,11 @@ xrdb -merge "$HOME/.Xresources" -I"$HOME/.Xresources.d"
 
 # [ "$(pgrep picom)" ] && killall picom
 [ "$(pgrep dunst)" ] && killall dunst
-[ "$(pgrep xscreensaver)" ] && killall xscreensaver
+#[ "$(pgrep xscreensaver)" ] && killall xscreensaver
 [ "$(pgrep volumeicon)" ] && killall volumeicon
 
 # [ ! "$(pgrep picom)" ] && picomd.sh &
 [ ! "$(pgrep volumeicon)" ] && exec volumeicon &
 [ ! "$(pgrep dunst)" ] && exec dunst &
-[ ! "$(pgrep xscreensaver)" ] && exec xscreensaver &
+#[ ! "$(pgrep xscreensaver)" ] && exec xscreensaver &
+
