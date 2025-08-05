@@ -7,24 +7,36 @@ local keys   = require("module.keys")
 local menubar = require("menubar")
 local defaults = require("module.default_programs")
 
+local accent_color = "#4a569c"
+
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/theme"
 theme.wallpaper                                 = theme.dir .. "/wp.png"
-theme.font                                      = "Droid Sans 9"
+theme.font                                      = "Eight Bit Dragon 8"
+
 theme.fg_normal                                 = "#DDDDFF"
-theme.fg_focus                                  = "#EA6F81"
-theme.fg_urgent                                 = "#CC9393"
-theme.bg_normal                                 = "#1A1A1A"
-theme.bg_focus                                  = "#313131"
+theme.fg_focus                                  = "#DDDDFF"
+theme.fg_urgent                                 = accent_color
+theme.bg_normal                                 = "#181818"
+theme.bg_focus                                  = accent_color
 theme.bg_urgent                                 = "#1A1A1A"
-theme.border_width                              = dpi(1)
+
+theme.bar_position                              = "top"
+
+theme.border_width                              = dpi(2)
 theme.border_normal                             = "#3F3F3F"
-theme.border_focus                              = "#7F7F7F"
-theme.border_marked                             = "#CC9393"
-theme.tasklist_bg_focus                         = "#1A1A1A"
-theme.titlebar_bg_focus                         = theme.bg_focus
-theme.titlebar_bg_normal                        = theme.bg_normal
-theme.titlebar_fg_focus                         = theme.fg_focus
+theme.border_focus                              = accent_color
+theme.border_marked                             = accent_color
+
+theme.tasklist_bg_focus                         = accent_color
+theme.tasklist_bg_normal                        = "#717171"
+theme.tasklist_bg_urgent                        = "#FF1100"
+theme.tasklist_bg_minimize                      = theme.bg_normal
+
+theme.titlebar_bg_focus                         = "#6d6d6d"
+theme.titlebar_bg_normal                        = "#181818"
+theme.titlebar_fg_focus                         = "#FFFFFF"
+
 theme.menu_height                               = dpi(16)
 theme.menu_width                                = dpi(140)
 theme.menu_submenu_icon                         = theme.dir .. "/icons/submenu.png"
@@ -59,9 +71,12 @@ theme.layout_floating                           = theme.dir .. "/icons/floating.
 -- theme.widget_vol_mute                           = theme.dir .. "/icons/vol_mute.png"
 -- theme.widget_mail                               = theme.dir .. "/icons/mail.png"
 -- theme.widget_mail_on                            = theme.dir .. "/icons/mail_on.png"
-theme.tasklist_plain_task_name                  = true
-theme.tasklist_disable_icon                     = false
-theme.useless_gap                               = dpi(3)
+theme.tasklist_plain_task_name                  =  false
+theme.tasklist_disable_icon                     =  false
+theme.tasklist_disable_task_name                 = true
+theme.useless_gap                               = dpi(2)
+theme.systray_icon_spacing                      = dpi(2)
+theme.separator_color = theme.bg_normal
 theme.titlebar_close_button_focus               = theme.dir .. "/icons/titlebar/close_focus.png"
 theme.titlebar_close_button_normal              = theme.dir .. "/icons/titlebar/close_normal.png"
 theme.titlebar_ontop_button_focus_active        = theme.dir .. "/icons/titlebar/ontop_focus_active.png"
@@ -157,11 +172,32 @@ theme.at_screen_connect = function(s)
   s.mytasklist = awful.widget.tasklist {
     screen  = s,
     filter  = awful.widget.tasklist.filter.currenttags,
-    buttons = keys.tasklist_buttons
+    buttons = keys.tasklist_buttons,
+    style   = {
+      shape = gears.shape.rounded_rectangle,
+      spacing = 3,
+    },
+    widget_template = {
+      {
+        {
+          {
+            id     = 'icon_role',
+            widget = wibox.widget.imagebox,
+          },
+          halign = "center",
+          valign = "center",
+          widget = wibox.container.place,
+        },
+        margins = 0,
+        widget  = wibox.container.margin,
+      },
+      id     = 'background_role',
+      widget = wibox.container.background,
+    },
   }
 
   -- Create the wibox
-  s.mywibox = awful.wibar({ position = "top", screen = s })
+  s.mywibox = awful.wibar({ position = theme.bar_position, screen = s })
 
   -- Add widgets to the wibox
   s.mywibox:setup {
@@ -172,7 +208,11 @@ theme.at_screen_connect = function(s)
       s.mypromptbox,
       s.mylayoutbox,
     },
-    s.mytasklist, -- Middle widget
+    {
+        s.mytasklist,
+        layout = wibox.container.place,
+        halign = "center",
+    },
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
       wibox.widget.systray(),
