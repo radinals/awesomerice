@@ -97,6 +97,19 @@ return {
   },
 
   {
+    group = "screen",
+    bindings= {
+      { mod = {M.MOD}, key = ",",
+        press = function() awful.screen.focus_relative(1) end,
+        desc = "focus screen next" },
+
+      { mod = {M.MOD}, key = ".",
+        press = function() awful.screen.focus_relative(-1) end,
+        desc = "focus previous by index" },
+    }
+  },
+
+  {
     group = "launcher",
     bindings= {
       { mod = {M.MOD}, key = "Return",
