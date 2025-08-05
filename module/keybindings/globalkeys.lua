@@ -4,6 +4,7 @@ local awful = require("awful")
 local defaults = require("module.default_programs")
 local cmd = require("module.keybindings.commands")
 local M = require("module.keybindings.modkeys")
+local conf = require("module.config")
 local naughty = require("naughty")
 
 return {
@@ -149,11 +150,11 @@ return {
     group = "layout",
     bindings= {
       { mod = {M.MOD}, key = "l",
-        press = function() awful.tag.incmwfact(0.05) end,
+        press = function() awful.tag.incmwfact(conf.master_width_fac) end,
         desc = "increase master width factor" },
 
       { mod = {M.MOD}, key = "h",
-        press = function() awful.tag.incmwfact(-0.05) end,
+        press = function() awful.tag.incmwfact(-conf.master_width_fac) end,
         desc = "decrease master width factor" } },
   },
 
@@ -223,4 +224,3 @@ return {
     },
   }
 }
-
