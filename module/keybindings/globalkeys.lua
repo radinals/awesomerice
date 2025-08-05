@@ -148,19 +148,19 @@ return {
     group = "mediakeys",
     bindings= {
       { key = "XF86MonBrightnessUp",
-        press = function() cmd.increaseBrightness(5) end,
+        press = function() cmd.increaseBrightness(conf.brightness_fac) end,
         desc = "+1% brightness" },
 
       { key = "XF86MonBrightnessDown",
-        press = function() cmd.decreaseBrightness(5) end,
+        press = function() cmd.decreaseBrightness(conf.brightness_fac) end,
         desc = "-1% brightness" },
 
       { key = "XF86AudioRaiseVolume",
-        press = function() cmd.increaseAudioVolume(5) end,
+        press = function() cmd.increaseAudioVolume(conf.volume_fac) end,
         desc = "+1% volume" },
 
       { key = "XF86AudioLowerVolume",
-        press = function() cmd.decreaseAudioVolume(5) end,
+        press = function() cmd.decreaseAudioVolume(conf.volume_fac) end,
         desc = "-1% volume" },
 
       { key = "XF86AudioMute",
@@ -168,11 +168,11 @@ return {
         desc = "mute audio" },
 
       { mod = { M.MOD, M.SHIFT }, key = "=",
-        press = function() cmd.increaseAudioVolume(5) end,
+        press = function() cmd.increaseAudioVolume(conf.volume_fac) end,
         desc = "volume up" },
 
       { mod = { M.MOD, M.SHIFT }, key = "-",
-        press = function() cmd.decreaseAudioVolume(5) end,
+        press = function() cmd.decreaseAudioVolume(conf.volume_fac) end,
         desc = "volume down" },
 
       { mod = { M.MOD, M.SHIFT }, key = "BackSpace",
