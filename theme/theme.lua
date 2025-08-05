@@ -81,6 +81,15 @@ theme.titlebar_maximized_button_normal_active   = theme.dir .. "/icons/titlebar/
 theme.titlebar_maximized_button_focus_inactive  = theme.dir .. "/icons/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_inactive = theme.dir .. "/icons/titlebar/maximized_normal_inactive.png"
 
+theme.notification_font = "monospace 10"
+theme.notification_bg = "#202020"
+theme.notification_fg = theme.fg_normal
+theme.notification_border_width = dpi(16)
+theme.notification_shape = gears.shape.rounded_rect
+theme.notification_border_color = "#FFFFFF"
+theme.notification_max_width = dpi(300)
+theme.notification_max_height = dpi(80)
+
 theme.set_wallpaper = function(s)
   -- Wallpaper
   if theme.wallpaper then

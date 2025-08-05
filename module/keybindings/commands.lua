@@ -1,3 +1,6 @@
+
+local naughty = require("naughty")
+
 return {
   increaseBrightness        =  function(n) os.execute("brightnessctl s ".. n .."%+") end,
   decreaseBrightness        =  function(n) os.execute("brightnessctl s ".. n .."%-") end,
@@ -18,4 +21,21 @@ return {
 
   cmusVolumeIncrease        =  function()  os.execute("cmus-remote --volume +1%") end,
   cmusVolumeDecrease        =  function()  os.execute("cmus-remote --volume -1%") end,
+
+  toggle_notifications = function ()
+          if (naughty.is_suspended()) then
+            naughty.toggle();
+            naughty.notify{
+              title = "Notifications Settings Changed",
+              text = "Enabling Notifications"
+            }
+            else
+            naughty.notify{
+              title = "Notifications Settings Changed",
+              text = "Disabling Notifications"
+            }
+            naughty.toggle();
+          end
+        end,
+
 }

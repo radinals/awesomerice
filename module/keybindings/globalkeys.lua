@@ -4,6 +4,7 @@ local awful = require("awful")
 local defaults = require("module.default_programs")
 local cmd = require("module.keybindings.commands")
 local M = require("module.keybindings.modkeys")
+local naughty = require("naughty")
 
 return {
   {
@@ -21,6 +22,21 @@ return {
       { mod = { M.MOD, M.CONTROL }, key = "q",
         press = awesome.quit,
         desc = "quit awesome" } },
+  },
+
+  {
+    group = "notification",
+    bindings = {
+      { mod = {M.MOD}, key = "grave",
+        press = cmd.toggle_notifications,
+        desc = "Toggle Notification State",
+      },
+
+      { mod = {M.MOD}, key = "BackSpace",
+        press = naughty.destroy_all_notifications,
+        desc = "Destroy All Notifications",
+      },
+    },
   },
 
   {
