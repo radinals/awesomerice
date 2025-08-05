@@ -8,7 +8,7 @@ p.calculator = "qalculate-gtk"
 p.xmouseless = "xmouseless"
 p.windowswitcher = "WinSwitcher"
 p.runprompt = "dmenu_run -c -i -g 3 -np -bw 1 -l 20 -p 'RUN'"
-p.eclipse = "eclipse"
+p.idemenu = "ide-menu"
 p.tmux = p.terminal .. " -e " .. "tmux_start"
 
 return p

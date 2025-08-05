@@ -121,8 +121,8 @@ return {
         desc = "open tmux" },
 
       { mod = { M.MOD, M.ALT }, key = "Return",
-        press = function() awful.spawn(defaults.eclipse) end,
-        desc = "open Eclipse" },
+        press = function() awful.spawn(defaults.idemenu) end,
+        desc = "Open IDE Selection Menu" },
 
       { mod = {M.MOD}, key = "space",
         press = function() awful.spawn(defaults.runprompt) end,
