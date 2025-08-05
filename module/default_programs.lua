@@ -10,5 +10,6 @@ p.windowswitcher = "WinSwitcher"
 p.runprompt = "dmenu_run -c -i -g 3 -np -bw 1 -l 20 -p 'RUN'"
 p.idemenu = "ide-menu"
 p.tmux = p.terminal .. " -e " .. "tmux_start"
+p.screenshot_tool = "dm-screenshot"
 
 return p

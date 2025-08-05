@@ -147,6 +147,10 @@ return {
 
       { mod = { M.MOD, M.ALT }, key = "m",
         press = function() awful.spawn.with_shell(defaults.xmouseless) end,
+        desc = "run xmouseless" },
+
+      { mod = { M.MOD }, key = "Print",
+        press = function() awful.spawn.with_shell(defaults.screenshot_tool) end,
         desc = "run xmouseless" } },
   },
 
