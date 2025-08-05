@@ -6,6 +6,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 local keys   = require("module.keys")
 local menubar = require("menubar")
 local defaults = require("module.default_programs")
+local naughty = require("naughty")
 
 local accent_color = "#4a569c"
 
@@ -235,8 +236,111 @@ theme.awesomemenu = {
   { "quit", function() awesome.quit() end },
 }
 
+local function confirm_popup(message, on_yes, on_no)
+    Popup = awful.popup {
+      widget = {
+        {
+          {
+            {
+              text = message or "Are you sure?",
+              widget = wibox.widget.textbox,
+              align = "center",
+              valign = "center",
+            },
+
+            {
+              wibox.widget {
+                {
+                  text = "Yes",
+                  align = "center",
+                  valign = "center",
+                  widget = wibox.widget.textbox
+                },
+                bg = "#88cc88",
+                fg = "#000000",
+                shape = gears.shape.rounded_bar,
+                widget = wibox.container.background,
+                forced_height = 30,
+                forced_width = 60,
+                buttons = gears.table.join(
+                awful.button({}, 1, function()
+                  Popup.visible = false
+                  if on_yes then on_yes() end
+                end)
+                ),
+              },
+
+              spacing = 10,
+              layout = wibox.layout.fixed.vertical,
+
+              wibox.widget {
+                {
+                  text = "No",
+                  align = "center",
+                  valign = "center",
+                  widget = wibox.widget.textbox
+                },
+                bg = "#cc8888",
+                fg = "#000000",
+                shape = gears.shape.rounded_bar,
+                widget = wibox.container.background,
+                forced_height = 30,
+                forced_width = 60,
+                buttons = gears.table.join(
+                awful.button({}, 1, function()
+                  Popup.visible = false
+                  if on_no then on_no() end
+                end)
+                )
+              },
+            },
+
+            spacing = 10,
+            layout = wibox.layout.fixed.vertical
+          },
+          margins = 40,
+          widget = wibox.container.margin
+        },
+        bg = "#222222",
+        shape = gears.shape.rounded_rect,
+        border_width = 2,
+        border_color = "#888888",
+        widget = wibox.container.background
+      },
+      ontop = true,
+      visible = true,
+      placement = awful.placement.centered,
+    }
+  end
+
+
+local function confirmAction(actionName, actionCmd)
+    confirm_popup("Are You Sure You Want to " .. actionName,
+    function() os.execute(actionCmd) end,
+    function()naughty.notify({ text = "Canceled " .. actionName }) end
+    )
+end
+
+theme.powermenu = {
+  { "shutdown", function () confirmAction("shutdown", "systemctl poweroff") end },
+  { "reboot", function() confirmAction("reboot", "systemctl reboot") end },
+}
+
+local ide_menu = {
+  { "Intel-Ij", defaults.intelij},
+  { "Rider", defaults.rider},
+  { "Android Studio", defaults.android_studio },
+  { "MySQL Workbench", defaults.mysqlworkbench },
+  { "DBeaver", defaults.dbeaver },
+  { "VS Code", defaults.vscode},
+  { "Godot", defaults.godot}
+}
+
 theme.mainmenu = awful.menu({ items = {
     { "awesome", theme.awesomemenu, theme.awesome_icon },
+    { "powermenu", theme.powermenu },
+    { 'display', 'arandr'},
+    { 'IDE', ide_menu},
     { "open terminal", defaults.terminal }
   }
 })
