@@ -40,12 +40,14 @@ do
   end)
 end
 -- }}}
-awful.spawn.with_shell("$XDG_CONFIG_HOME/awesome/autostart")
-local init_programs = { "nm-applet" }
+
+
 -- run once every time Awesome is started
-for _, cmd in ipairs(init_programs) do
-  awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
-end
+awful.spawn.with_shell("$XDG_CONFIG_HOME/awesome/autostart")
+-- init_programs = {}
+-- for _, cmd in ipairs(init_programs) do
+--   awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
+-- end
 
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("/home/rss/.config/awesome/theme/theme.lua")

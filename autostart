@@ -1,4 +1,5 @@
 #!/bin/bash
+
 xset r rate 280 80 & # set the autorepeat
 xset +dpms & # enable dpms
 xset b off & # turn off bell
@@ -17,13 +18,40 @@ setxkbmap -option caps:swapescape &
 
 xrdb -merge "$HOME/.Xresources" -I"$HOME/.Xresources.d"
 
-# [ "$(pgrep picom)" ] && killall picom
-[ "$(pgrep dunst)" ] && killall dunst
-#[ "$(pgrep xscreensaver)" ] && killall xscreensaver
-[ "$(pgrep volumeicon)" ] && killall volumeicon
+execute_cmd() {
+    local cmd
+    local MAX_ATTEMPTS
+    local WAIT_DURATION
+    local total_attempts
 
-# [ ! "$(pgrep picom)" ] && picomd.sh &
-[ ! "$(pgrep volumeicon)" ] && exec volumeicon &
-[ ! "$(pgrep dunst)" ] && exec dunst &
-#[ ! "$(pgrep xscreensaver)" ] && exec xscreensaver &
+    cmd="$1"
+    MAX_ATTEMPTS=5
+    WAIT_DURATION="2s"
 
+    # kill the process if exists
+    
+    if [ "$(pgrep "$cmd")" ];then
+        killall "$cmd"
+    fi
+
+    total_attempts=0
+    while [ "$(pgrep "$cmd")" ] && [ $total_attempts -lt $MAX_ATTEMPTS ] ; do
+        sleep $WAIT_DURATION
+        killall "$cmd"
+        total_attempts=$((total_attempts+1))
+    done
+
+    # execute the process
+    
+    $cmd & 
+
+    total_attempts=0
+    while [ ! "$(pgrep "$cmd")" ] && [ $total_attempts -lt $MAX_ATTEMPTS ] ; do
+        sleep $WAIT_DURATION
+        $cmd &
+        total_attempts=$((total_attempts+1))
+    done
+}
+
+execute_cmd "volumeicon" &
+execute_cmd "nm-applet" &
