@@ -102,10 +102,6 @@ theme.set_wallpaper = function(s)
   end
 end
 
--- Create a textclock widget
-local separator = wibox.widget.textbox("   ")
-local mytextclock = wibox.widget.textclock()
-
 local getWidget = function (widget, ...)
   local success, mywidget = pcall(require, widget)
   if (success) then
@@ -114,6 +110,16 @@ local getWidget = function (widget, ...)
     return wibox.widget.textbox("[ERROR]")
   end
 end
+
+-- Create a textclock widget
+local separator = wibox.widget.textbox("   ")
+
+local clock_widget = wibox.widget{
+  format = '%a %b %d, %H:%M',
+  font = theme.font,
+  widget = wibox.widget.textclock,
+  fg = accent_color,
+}
 
 local battery_widget = getWidget("theme.awesome-wm-widgets.battery-widget.battery",{ show_current_level=true })
 local cmus_widget = getWidget("theme.awesome-wm-widgets.cmus-widget.cmus")
@@ -175,7 +181,7 @@ theme.at_screen_connect = function(s)
       separator,
       battery_widget,
       separator,
-      mytextclock,
+      clock_widget,
     },
   }
 
