@@ -141,6 +141,10 @@ return {
         press = function() awful.spawn(defaults.calculator) end,
         desc = "run calculator" },
 
+      -- { mod = { M.MOD }, key = "l",
+      --   press = function() cmd.openbookmarkmenu() end,
+      --   desc = "open bookmark" },
+
       { mod = { M.MOD, M.ALT }, key = "m",
         press = function() awful.spawn.with_shell(defaults.xmouseless) end,
         desc = "run xmouseless" } },

@@ -22,6 +22,8 @@ return {
   cmusVolumeIncrease        =  function()  os.execute("cmus-remote --volume +1%") end,
   cmusVolumeDecrease        =  function()  os.execute("cmus-remote --volume -1%") end,
 
+  -- openbookmarkmenu          = function() os.execute("dm-bookmarks") end,
+
   toggle_notifications = function ()
           if (naughty.is_suspended()) then
             naughty.toggle();
