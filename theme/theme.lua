@@ -104,7 +104,7 @@ theme.notification_border_width = dpi(16)
 theme.notification_shape = gears.shape.rounded_rect
 theme.notification_border_color = "#FFFFFF"
 theme.notification_max_width = dpi(300)
-theme.notification_max_height = dpi(80)
+
 
 theme.set_wallpaper = function(s)
   -- Wallpaper
