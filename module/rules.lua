@@ -47,7 +47,7 @@ return {
       "veromix",
       "xtightvncviewer",
       "Dialog",
-      "TaskMan"
+      "TaskTimer"
     },
 
     -- Note that the name property shown in xprop might be set slightly after creation of the client
